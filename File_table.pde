@@ -47,6 +47,7 @@ void loadTableSettings(String s) {
 void fileToSave(File selection) {
   if (selection == null) {
     println("Window was closed or the user hit cancel.");
+    loop();
   } else {
     println("User selected " + selection.getAbsolutePath());
     saveTableSettings(selection.getAbsolutePath());

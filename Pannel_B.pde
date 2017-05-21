@@ -17,26 +17,51 @@ void init() {
 }
 // FUNCTION TO ACTIVATE PANEL BUTTON
 void mousePressed() {
-  if (exit.isPressed()) exit();
-  if (save.isPressed()) selectOutput("Save Editor Settings:", "fileToSave"); 
-  if (load.isPressed()) selectInput("Load Editor Settings:", "fileToLoad");
+  if (exit.isPressed()) {
+    try { 
+      exit();
+    } 
+    catch (Exception e) { 
+      e.printStackTrace();
+    }
+  }
+  if (save.isPressed()) {  
+    try { 
+      selectOutput("Save Editor Settings:", "fileToSave");
+    } 
+    catch (Exception e) { 
+     println( e);
+    }
+  }
+  if (load.isPressed()) { 
+    try { 
+      selectInput("Load Editor Settings:", "fileToLoad");
+    } 
+    catch (Exception e) { 
+      e.printStackTrace();
+    }
+  }
   //*************
   //send all to first page
   //**************
   if (sendFirstPage.isPressed()) {
-    myBus.sendMessage(241,0,0);
+    myBus.sendMessage(241, 0, 0);
     delay(160);
     for (myUI pz : elementData) {
       myBus.sendMessage(176+pz.midiChannel-1, pz.note, pz.memoryPosition);
       delay(4);
-      myBus.sendMessage(176+pz.midiChannel-1, pz.setExcursionControllMax, pz.setExcursionControllMin);
+      if ( pz.modifiers == 0) {
+        myBus.sendMessage(176+pz.midiChannel-1, pz.setExcursionControllMax, pz.setExcursionControllMin);
+      } else {
+        myBus.sendMessage(176+pz.midiChannel-1, pz.setExcursionControllMax, pz.modifiers);
+      }
       delay(4);
       myBus.sendMessage(176+pz.midiChannel-1, int(pz.toggleMode), pz.addressDMX);
       delay(4);
-      myBus.sendMessage(176+pz.midiChannel-1, int(pz.togglePage), pz.indexMidiType); // da verificare
+      myBus.sendMessage(176+pz.midiChannel-1, int(pz.keyBoard), int (pz.indexMidiType)); // da verificare
       delay(160);
     }
-    myBus.sendMessage(241,0,0);
+    myBus.sendMessage(241, 0, 0);
   }
   //*************
   //send all to second page
@@ -47,11 +72,15 @@ void mousePressed() {
     for (myUI pz : elementData) {
       myBus.sendMessage(176+pz.midiChannel-1, pz.note, pz.memoryPosition + 64);
       delay(4);
-      myBus.sendMessage(176+pz.midiChannel-1, pz.setExcursionControllMax, pz.setExcursionControllMin);
+      if ( pz.modifiers == 0) {
+        myBus.sendMessage(176+pz.midiChannel-1, pz.setExcursionControllMax, pz.setExcursionControllMin);
+      } else {
+        myBus.sendMessage(176+pz.midiChannel-1, pz.setExcursionControllMax, pz.modifiers);
+      }
       delay(4);
       myBus.sendMessage(176+pz.midiChannel-1, int(pz.toggleMode), pz.addressDMX);
       delay(4);
-      myBus.sendMessage(176+pz.midiChannel-1, int(pz.togglePage), pz.indexMidiType); // da verificare
+      myBus.sendMessage(176+pz.midiChannel-1, int(pz.keyBoard), int (pz.indexMidiType)); // da verificare
       delay(160);
     }
     //println("send all");
@@ -68,13 +97,17 @@ void mousePressed() {
       if (elementData.get(i).getStateDisplay()) {
         myBus.sendMessage(176+elementData.get(i).midiChannel-1, elementData.get(i).note, elementData.get(i).memoryPosition);
         delay(4);
-        myBus.sendMessage(176+elementData.get(i).midiChannel-1, elementData.get(i).setExcursionControllMax, elementData.get(i).setExcursionControllMin);
+        if (  elementData.get(i).modifiers == 0) {
+          myBus.sendMessage(176+elementData.get(i).midiChannel-1, elementData.get(i).setExcursionControllMax, elementData.get(i).setExcursionControllMin);
+        } else {
+          myBus.sendMessage(176+elementData.get(i).midiChannel-1, elementData.get(i).setExcursionControllMax, elementData.get(i).modifiers);
+        }
         delay(4);
         myBus.sendMessage(176+elementData.get(i).midiChannel-1, int(elementData.get(i).toggleMode), elementData.get(i).addressDMX);
         delay(4);
-        myBus.sendMessage(176+elementData.get(i).midiChannel-1, int(elementData.get(i).togglePage), elementData.get(i).indexMidiType); // da verificare
+        myBus.sendMessage(176+elementData.get(i).midiChannel-1, int(elementData.get(i).keyBoard), int ( elementData.get(i).indexMidiType ));
         delay(160);
-        println(i);
+        break;
       }
     } 
     myBus.sendMessage(241, 0, 0);
@@ -89,13 +122,17 @@ void mousePressed() {
       if (elementData.get(i).getStateDisplay()) {
         myBus.sendMessage(176+elementData.get(i).midiChannel-1, elementData.get(i).note, elementData.get(i).memoryPosition+64);
         delay(4);
-        myBus.sendMessage(176+elementData.get(i).midiChannel-1, elementData.get(i).setExcursionControllMax, elementData.get(i).setExcursionControllMin);
+        if (  elementData.get(i).modifiers == 0) {
+          myBus.sendMessage(176+elementData.get(i).midiChannel-1, elementData.get(i).setExcursionControllMax, elementData.get(i).setExcursionControllMin);
+        } else {
+          myBus.sendMessage(176+elementData.get(i).midiChannel-1, elementData.get(i).setExcursionControllMax, elementData.get(i).modifiers);
+        }
         delay(4);
         myBus.sendMessage(176+elementData.get(i).midiChannel-1, int(elementData.get(i).toggleMode), elementData.get(i).addressDMX);
         delay(4);
-        myBus.sendMessage(176+elementData.get(i).midiChannel-1, int(elementData.get(i).togglePage), elementData.get(i).indexMidiType); // da verificare
+        myBus.sendMessage(176+elementData.get(i).midiChannel-1, int(elementData.get(i).keyBoard), int ( elementData.get(i).indexMidiType ));
         delay(160);
-        println(i);
+        break;
       }
     } 
     myBus.sendMessage(241, 0, 0);
