@@ -44,21 +44,30 @@ void loadTableSettings(String s) {
     elementData.get(i).loadTableRow(table.getRow(i));
   }
 }
-void fileToSave(File selection) {
-  if (selection == null) {
-    println("Window was closed or the user hit cancel.");
-    loop();
-  } else {
-    println("User selected " + selection.getAbsolutePath());
-    saveTableSettings(selection.getAbsolutePath());
+void fileToSave(File selection) {    
+  try { 
+    if (selection == null) {
+      println("Window was closed or the user hit cancel.");
+    } else {
+      println("User selected " + selection.getAbsolutePath());
+      saveTableSettings(selection.getAbsolutePath());
+    }
+  } 
+  catch (Exception e) { 
+    println( e);
   }
 }
 void fileToLoad(File selection) {
-  if (selection == null) {
-    println("Window was closed or the user hit cancel.");
-  } else {
-    println("User selected " + selection.getAbsolutePath());
-    loadTableSettings(selection.getAbsolutePath());
+  try { 
+    if (selection == null) {
+      println("Window was closed or the user hit cancel.");
+    } else {
+      println("User selected " + selection.getAbsolutePath());
+      loadTableSettings(selection.getAbsolutePath());
+    }
+  } 
+  catch (Exception e) { 
+    println( e);
   }
 }
 // *****************************************

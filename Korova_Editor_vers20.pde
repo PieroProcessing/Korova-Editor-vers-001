@@ -2,7 +2,7 @@
 //    Risoluzione consigliata  1440*900
 //**************************************
 
-//Import the library to create an interface //<>//
+//Import the library to create an interface
 import controlP5.*;
 //to work with file
 import java.util.*;
@@ -28,8 +28,10 @@ int setValueActiveElement= 0;
 
 void setup() {
 
-  fullScreen();
-  //size(820, 640);
+  //fullScreen();
+  //size(1280 , 720);
+  size( 1300,850);
+  surface.setResizable(true);
 
   //**********************
   // for showing the logo 
@@ -37,10 +39,12 @@ void setup() {
   background(0);
   logo = loadImage("logo.png"); 
   image(logo, width/2-150, height/2-150);
+  f = createFont("typeO.TTF", width/110);
+
+
   //jogWheel = loadImage("jw.png");
   init(); // pannel b
-
-  settingScreen(); // in interface graphics
+  metric(); // in interface graphics
 
   // HOW TO SET MIDI COMMUNICATIONS in Midi class//
   initMidi();
@@ -48,14 +52,23 @@ void setup() {
   // THE BUTTON POSITION AND POLYMORFISM in ElementPosition class//
   setupElement (); // element position
 
-  initTableOfElementData(); // pannel b
-  setUIButtonsPosition(); // pannel b
+  //initTableOfElementData(); // pannel b
+  setUIButtons(); // pannel b
+  sizeUIElement();
   elementData.get(0).setDisplay(true);
 
   myBus.sendTimestamps(false);
 }
+
 void draw() {
+  if (referenceW != width || referenceH != height) {
+    metric();
+    resizeElement();
+    //println(width);
+    //println(height);
+  }
   background(0);
+
   //image(logo, width/2-150, height/2-150);
   //*******************************************graphic elements
   interfaceDisp(); // in interface class
@@ -73,7 +86,7 @@ void controlEvent(CallbackEvent theEvent) {
     case(ControlP5.ACTION_PRESSED): 
     //println("Action:PRESSED");
     // println(theEvent.getController().getId());
-     infoGraph = theEvent.getController().getId();
+    infoGraph = theEvent.getController().getId();
     println(" info graph: " + infoGraph);
     if (infoGraph != -1 && infoGraph<elementData.size()) {
       println(" id element: " + infoGraph);

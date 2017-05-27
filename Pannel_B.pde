@@ -1,6 +1,6 @@
 // INTERFACE CONTROLL BUTTON
 ControlP5 control;
-Button exit, save, load, sendFirstPage, sendSecondPage, sendOnPageOne, sendOnPageTwo;
+Button exit, save, load, sendFirstPage, sendSecondPage, sendOnPageOne, sendOnPageTwo, controlWindow;
 
 //**************************** 
 //*****    the control p5 init
@@ -10,13 +10,15 @@ void init() {
   control = new ControlP5(this);
   cp5 = new ControlP5(this);
   ellipseMode(CENTER);
-  f = createFont("typeO.TTF", fontDimension-3); 
-  textFont(f, fontDimension);
-  cp5.setFont(f, fontDimension);
-  control.setFont(f, 11);
+  //textAlign(CENTER, CENTER);
 }
+
 // FUNCTION TO ACTIVATE PANEL BUTTON
 void mousePressed() {
+  if  (controlWindow.isPressed()) {
+    surface.setSize(1440, 920);
+    surface.setLocation(0, 0);
+  }
   if (exit.isPressed()) {
     try { 
       exit();
@@ -30,7 +32,7 @@ void mousePressed() {
       selectOutput("Save Editor Settings:", "fileToSave");
     } 
     catch (Exception e) { 
-     println( e);
+      println( e);
     }
   }
   if (load.isPressed()) { 
@@ -140,62 +142,86 @@ void mousePressed() {
     //}
   }
 }
+void sizeUIElement() {
+  exit
+    .setPosition(C[20]+15, R[8])
+    .setSize((int)C[4], (int)R[3])
+    ;
+  sendFirstPage    
+    .setPosition(C[27], R[8])
+    .setSize((int)C[8], (int) R[3])
+    ;
+  sendSecondPage    
+    .setPosition(C[36], R[8])
+    .setSize((int)C[8], (int) R[3])
+    ;
+  sendOnPageOne    
+    .setPosition(C[75], R[8])
+    .setSize((int)C[8], (int)R[3])
+    ;
+  sendOnPageTwo    
+    .setPosition(C[85], R[8])
+    .setSize((int)C[8], (int) R[3])
+    ;
+  save    
+    .setPosition(C[53], R[8])
+    .setSize((int)C[4], (int)R[3])
+    ;
+  load    
+    .setPosition(C[46], R[8])
+    .setSize((int)C[4], (int)R[3])
+    ;
+  controlWindow    
+    .setPosition(C[10], R[8])
+    .setSize((int)C[8], (int) R[3])
+    ;
+}
 // TO SET THE BUTTON POSITION
-void setUIButtonsPosition () {
+void setUIButtons() {
+  controlWindow=control.addButton("Full Screen")
+    .setId(3000)
+    .setValue(0)
+    .setView(new SisButton())
+    ;
   exit = control.addButton("Exit")
     .setId(1000)
     .setValue(0)
-    .setPosition(gridCols[3], gridRow[2]-10)
-    .setSize(100, 35)
     .setView(new SisButton())
     ;
-  ;
+
   sendFirstPage = control.addButton("To 1st Page")
     .setId(1001)
     .setValue(0)
-    .setPosition(gridCols[6]-45, gridRow[2]-10)
-    .setSize(140, 35)
     .setView(new SisButton())
     ;
-  ;
+
   sendSecondPage = control.addButton("To 2nd Page")
     .setId(1002)
     .setValue(0)
-    .setPosition(gridCols[8]-5, gridRow[2]-10)
-    .setSize(140, 35)
     .setView(new SisButton())
     ;
-  ;
+
   sendOnPageOne = control.addButton("Send to One")
     .setId(1003)
     .setValue(0)
-    .setPosition(gridCols[18]+1, gridRow[2]-10)
-    .setSize(140, 35)
     .setView(new SisButton())
     ;
-  ;
+
   sendOnPageTwo = control.addButton("Send to Two")
     .setId(1003)
     .setValue(0)
-    .setPosition(gridCols[20]+30, gridRow[2]-10)
-    .setSize(140, 35)
     .setView(new SisButton())
     ;
-  ;
+
   save = control.addButton("Save")
     .setId(1004)
     .setValue(0)
-    .setPosition(gridCols[13]-5, gridRow[2]-10)
-    .setSize(100, 35)
     .setView(new SisButton())
     ;
-  ;
+
   load = control.addButton("Load")
     .setId(1005)
     .setValue(0)
-    .setPosition(gridCols[11]-5, gridRow[2]-10)
-    .setSize(100, 35)
     .setView(new SisButton())
     ;
-  ;
 }
